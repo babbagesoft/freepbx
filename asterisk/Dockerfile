@@ -9,7 +9,7 @@ ENV ASTERISK_BUILD_DEPS='autoconf automake bison build-essential doxygen flex li
             libjansson-dev libncurses5-dev libneon27-dev \
             libnewt-dev libogg-dev libresample1-dev libspandsp-dev libsqlite3-dev \
             libsrtp2-dev libssl-dev libtiff-dev libtool-bin libvorbis-dev \
-            libxml2-dev linux-headers-amd64 python-dev subversion unixodbc-dev \
+            libxml2-dev linux-headers-amd64 python3-dev subversion unixodbc-dev \
             uuid-dev'
 
 #build tools
