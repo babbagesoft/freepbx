@@ -22,14 +22,16 @@ ARG MARIAODBC_VERSION=2.0.19
 
 # Pin libxml2 packages to Debian repositories
 RUN echo "Package: libxml2*" > /etc/apt/preferences.d/libxml2 && \
-    echo "Pin: release o=Debian,n=buster" >> /etc/apt/preferences.d/libxml2 && \
+    echo "Pin: release o=Debian,n=bullseye" >> /etc/apt/preferences.d/libxml2 && \
     echo "Pin-Priority: 501" >> /etc/apt/preferences.d/libxml2
 
 # PHP 5.6
-RUN apt-get update && \
+RUN sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
+    sed -i 's|security.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
+    apt-get update && \
     apt-get install -y curl wget sox lsb-release && \
     curl https://packages.sury.org/php/apt.gpg | apt-key add - && \
-    echo "deb https://packages.sury.org/php/ buster main" > /etc/apt/sources.list.d/deb.sury.org.list && \
+    echo "deb https://packages.sury.org/php/ bullseye main" > /etc/apt/sources.list.d/deb.sury.org.list && \
     apt-get update && \
     apt-get install -y php5.6 php5.6-curl php5.6-cli php5.6-mysql php-pear php5.6-gd \
                        php5.6-xml php5.6-mbstring && \
@@ -73,8 +75,8 @@ RUN    sed -i -e "s/memory_limit = 128M/memory_limit = 256M/g" /etc/php/5.6/apac
 
 # FreePBX dependencies
 RUN curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
-    echo 'deb https://deb.nodesource.com/node_10.x buster main' > /etc/apt/sources.list.d/nodesource.list && \
-    echo 'deb-src https://deb.nodesource.com/node_10.x buster main' >> /etc/apt/sources.list.d/nodesource.list && \
+    echo 'deb https://deb.nodesource.com/node_10.x bullseye main' > /etc/apt/sources.list.d/nodesource.list && \
+    echo 'deb-src https://deb.nodesource.com/node_10.x bullseye main' >> /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
     apt-get install -y pkgconf && \
     apt-get install -y nodejs yarn cron gettext libicu-dev pkg-config
