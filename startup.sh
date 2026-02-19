@@ -17,7 +17,7 @@ chown -R asterisk:asterisk /backup
 #Fail2Ban
 if [ "$FAIL2BAN_ENABLE" == "true" ]; then
   set +e
-  mkdir /var/run/fail2ban
+  mkdir -p /var/run/fail2ban
   iptables-legacy -L
   if [ "$?" != "0" ]; then
     echo "For enabling fail2ban you have to run this container with 'privileged: true'"
