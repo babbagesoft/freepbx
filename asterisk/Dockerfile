@@ -16,18 +16,18 @@ ENV ASTERISK_BUILD_DEPS='autoconf automake bison build-essential doxygen flex li
 RUN apt-get update && \
     apt-get install --no-install-recommends -y curl gnupg ca-certificates $ASTERISK_BUILD_DEPS && \
     addgroup --gid 2600 asterisk && \
-    adduser --uid 2600 --gid 2600 --gecos "Asterisk User" --disabled-password asterisk && \
+    adduser --uid 2600 --gid 2600 --gecos "Asterisk User" --disabled-password asterisk
 
 #SpanDSP
-    mkdir -p /usr/src/spandsp && \
+RUN mkdir -p /usr/src/spandsp && \
     curl -kL http://sources.buildroot.net/spandsp/spandsp-${SPANDSP_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/spandsp && \
     cd /usr/src/spandsp && \
     ./configure && \
     make && \
-    make install && \
+    make install
 
 #compile Asterisk
-    cd /usr/src && \
+RUN cd /usr/src && \
     mkdir -p asterisk && \
     curl -sSL http://downloads.asterisk.org/pub/telephony/asterisk/releases/asterisk-${ASTERISK_VERSION}.tar.gz | tar xvfz - --strip 1 -C /usr/src/asterisk && \
     cd /usr/src/asterisk/ && \
@@ -49,10 +49,10 @@ RUN apt-get update && \
     make install && \
     make install-headers && \
     make config && \
-    ldconfig && \
+    ldconfig
 
 #G729 Codec
-    apt-get install -y git && \
+RUN apt-get install -y git && \
     git clone https://github.com/BelledonneCommunications/bcg729 /usr/src/bcg729 && \
     cd /usr/src/bcg729 && \
     git checkout tags/$BCG729_VERSION && \
@@ -67,19 +67,19 @@ RUN apt-get update && \
     ./autogen.sh && \
     ./configure --with-bcg729 --enable-penryn && \
     make && \
-    make install && \
+    make install
 
 # Cleanup 
-    cd / && \
+RUN cd / && \
     rm -rf /usr/src/* /tmp/* /etc/cron* && \
     apt-get purge -y $ASTERISK_BUILD_DEPS libspandsp-dev && \
     apt-get -y autoremove && \
     apt-get clean && \
     apt-get install -y make && \
-    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/lib/apt/lists/*
 
 # Needed for Asterisk to work properly
-    chown -R asterisk:asterisk /var/run/asterisk && \
+RUN chown -R asterisk:asterisk /var/run/asterisk && \
     chown -R asterisk:asterisk /etc/asterisk && \
     chown -R asterisk:asterisk /var/lib/asterisk && \
     chown -R asterisk:asterisk /var/log/asterisk && \
