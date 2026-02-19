@@ -1,4 +1,4 @@
-FROM debian:13.3
+FROM debian:12.13
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y curl gnupg ca-certificates wget
